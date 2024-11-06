@@ -1,12 +1,17 @@
 import { prisma } from "../database/prisma";
-import { TTaskCreate } from "../interfaces/tasks.interfaces";
+import { TTaskCreate , TResponseTaskSchemaWithCategory, TupdateTaskSchema, TTaskResponseWithoutCategory } from "../interfaces/tasks.interfaces";
 
 export class TasksServices{
-    getTasks(){
-      
+   async getTasks(){
+        const tasks = await prisma.task.findMany();
+
+        return tasks;
+
     } 
 
-    deleteTask(){
+    deleteTask(id: number){
+
+
        
     }
 
@@ -19,10 +24,11 @@ export class TasksServices{
     }
 
     updateTask(){
+    
 
     }
 
-    getTaskById(){
+    getTaskById(body: TResponseTaskSchemaWithCategory){
         
     }
 }

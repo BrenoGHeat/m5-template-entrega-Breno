@@ -2,11 +2,11 @@ import { Request , Response} from "express";
 import { TasksServices } from "../services/tasks.services";
 
 export class TasksControllers{
-    getTasks( req: Request, res: Response): Response{
+    async getTasks( req: Request, res: Response){
 
         const tasksServices = new TasksServices();
 
-        const tasks = tasksServices.getTasks();
+        const tasks = await tasksServices.getTasks();
 
         return res.status(200).json(tasks);
     } 
@@ -15,7 +15,7 @@ export class TasksControllers{
 
         const tasksServices = new TasksServices();
 
-        const id = req.params.id;
+        const id = req.body.id;
 
         tasksServices.deleteTask(id);
 
@@ -35,9 +35,15 @@ export class TasksControllers{
 
     }
 
-    updateTask(){
+    updateTask( req: Request, res: Response): Response{
 
         const tasksServices = new TasksServices();
+
+        const body = req.body;
+
+        const updateTask = tasksServices.updateTask();
+
+        return res.status(201).send(updateTask);
 
     }
 
