@@ -1,57 +1,72 @@
 import { Request , Response} from "express";
 import { TasksServices } from "../services/tasks.services";
+import { prisma } from "../database/prisma";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class TasksControllers{
+    constructor(@inject("TasksServices") private tasksServices: TasksServices ){}
     async getTasks( req: Request, res: Response){
 
-        const tasksServices = new TasksServices();
+       
 
-        const tasks = await tasksServices.getTasks();
+        const search = req.query.category as string;
+
+        if(search){
+            const tasks = await this.tasksServices.getTasks(search);
+
+             return res.status(200).json(tasks);
+
+        }
+
+        const tasks = await this.tasksServices.getTasks();
 
         return res.status(200).json(tasks);
     } 
 
-    deleteTask( req: Request, res: Response): Response{
+    async deleteTask( req: Request, res: Response){
 
-        const tasksServices = new TasksServices();
+       
+        this.tasksServices.deleteTask(Number(req.params.id));
 
-        const id = req.body.id;
-
-        tasksServices.deleteTask(id);
-
-        return res.status(204).send();
+        return res.status(204).json();
        
     }
 
-    createTask( req: Request, res: Response): Response{
+    async createTask( req: Request, res: Response){
 
-        const tasksServices = new TasksServices();
+        
 
         const body = req.body;
 
-        const task = tasksServices.createTask(body);
+        const task = this.tasksServices.createTask(body);
 
         return res.status(201).json(task);
 
     }
 
-    updateTask( req: Request, res: Response): Response{
+    async updateTask( req: Request, res: Response){
 
-        const tasksServices = new TasksServices();
+       
 
         const body = req.body;
 
-        const updateTask = tasksServices.updateTask();
+        const id = Number(req.params.id);
+
+        const updateTask = this.tasksServices.updateTask(body, id);
 
         return res.status(201).send(updateTask);
 
     }
 
-    getTaskById(){
+    async getTaskById(req: Request, res: Response){
 
-        const tasksServices = new TasksServices();
+      
+
+        const taskById = this.tasksServices.getTaskById(Number(req.params.id))
+
+        return res.status(200).json(taskById);
 
     }
-
 
 }

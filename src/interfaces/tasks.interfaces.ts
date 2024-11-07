@@ -14,6 +14,6 @@ export type TTaskCreate = z.infer<typeof createTaskSchema>;
 
 export type TTaskResponseWithoutCategory = z.infer<typeof responseTaskSchemaWithoutCategory>;
 
-export type TResponseTaskSchemaWithCategory = z.infer<typeof responseTaskSchemaWithCategory>;
+export type TTaskResponseWithCategory = z.infer<typeof responseTaskSchemaWithCategory>;
 
-export type TupdateTaskSchema = z.infer<typeof updateTaskSchema>;
+export type TTaskUpdate = z.infer<typeof updateTaskSchema>;
