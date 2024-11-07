@@ -4,7 +4,7 @@ import { IsTaskIdValid } from "../middlewares/IsTaskIdValid.middleware";
 import { TasksServices } from "../services/tasks.services";
 import { container } from "tsyringe";
 import { ValidateBody } from "../middlewares/ValidateBody.middleware";
-import { createTaskSchema } from "../schemas/task.schema";
+import { createTaskSchema, updateTaskSchema } from "../schemas/task.schema";
 
 export const tasksRouter = Router();
 
@@ -20,7 +20,7 @@ tasksRouter.get("/:id", IsTaskIdValid.execute, (req, res) =>
   tasksControllers.getTaskById(req, res)
 );
 
-tasksRouter.patch("/:id", IsTaskIdValid.execute, (req, res) =>
+tasksRouter.patch("/:id", ValidateBody.execute(updateTaskSchema), IsTaskIdValid.execute, (req, res) =>
   tasksControllers.updateTask(req, res)
 );
 
