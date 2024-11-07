@@ -3,6 +3,8 @@ import { TasksControllers } from "../controllers/tasks.controllers";
 import { IsTaskIdValid } from "../middlewares/IsTaskIdValid.middleware";
 import { TasksServices } from "../services/tasks.services";
 import { container } from "tsyringe";
+import { ValidateBody } from "../middlewares/ValidateBody.middleware";
+import { createTaskSchema } from "../schemas/task.schema";
 
 export const tasksRouter = Router();
 
@@ -10,7 +12,7 @@ container.registerSingleton("TasksServices", TasksServices);
 
 const tasksControllers = container.resolve(TasksControllers);
 
-tasksRouter.post("/", (req, res) => tasksControllers.createTask(req, res));
+tasksRouter.post("/", ValidateBody.execute(createTaskSchema), (req, res) => tasksControllers.createTask(req, res));
 
 tasksRouter.get("/", (req, res) => tasksControllers.getTasks(req, res));
 

@@ -8,7 +8,6 @@ export class TasksControllers{
     constructor(@inject("TasksServices") private tasksServices: TasksServices ){}
     async getTasks( req: Request, res: Response){
 
-       
 
         const search = req.query.category as string;
 
@@ -26,7 +25,6 @@ export class TasksControllers{
 
     async deleteTask( req: Request, res: Response){
 
-       
         this.tasksServices.deleteTask(Number(req.params.id));
 
         return res.status(204).json();
@@ -34,8 +32,6 @@ export class TasksControllers{
     }
 
     async createTask( req: Request, res: Response){
-
-        
 
         const body = req.body;
 
@@ -46,8 +42,6 @@ export class TasksControllers{
     }
 
     async updateTask( req: Request, res: Response){
-
-       
 
         const body = req.body;
 
