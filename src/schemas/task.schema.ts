@@ -6,8 +6,8 @@ export const taskSchema = z.object({
     title: z.string().min(1),
     content: z.string().min(1),
     finished: z.boolean().default(false),
-    categoryId: z.number().nullable(),
-    category: categorySchema.nullable(),
+    categoryId: z.number().nullish(),
+    category: categorySchema.nullish(),
 });
 
 

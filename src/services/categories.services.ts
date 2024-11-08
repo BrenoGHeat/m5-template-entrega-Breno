@@ -1,18 +1,19 @@
 import { prisma } from "../database/prisma";
+import { TCategoryCreate } from "../interfaces/categories.interface";
 import { createCategorySchema } from "../schemas/category.schema";
 import { injectable } from "tsyringe";
 
 @injectable()
 export class CategoriesServices {
-  async createCategories(body: createCategorySchema ) {
+  async createCategory ( body: TCategoryCreate ) {
     const categorie = await prisma.category.create({ data: body });
 
     return categorie;
   }
 
-  async deleteCategories(id: number) {
+  async deleteCategory(id: number) {
    
-    const data = await prisma.category.delete({ where: { id } });
+    await prisma.category.delete({ where: { id } });
 
   }
 }

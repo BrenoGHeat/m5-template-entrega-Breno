@@ -1,4 +1,3 @@
-
 import { injectable } from "tsyringe";
 import { prisma } from "../database/prisma";
 import {
@@ -20,12 +19,13 @@ export class TasksServices {
         where: {
           category: { name: { contains: search, mode: "insensitive" } },
         },
+        include: { category: true },
       });
 
       return responseTaskSchemaWithCategory.array().parse(tasks);
     }
 
-    const tasks = await prisma.task.findMany();
+    const tasks = await prisma.task.findMany({ include: { category: true } });
 
     return responseTaskSchemaWithCategory.array().parse(tasks);
   }
@@ -50,7 +50,10 @@ export class TasksServices {
   }
 
   async getTaskById(id: number): Promise<TTaskResponseWithCategory> {
-    const taskById = await prisma.task.findFirst({ where: { id: id } });
+    const taskById = await prisma.task.findFirst({
+      where: { id: id },
+      include: { category: true },
+    });
 
     return responseTaskSchemaWithCategory.parse(taskById);
   }

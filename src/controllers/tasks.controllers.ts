@@ -25,9 +25,9 @@ export class TasksControllers{
 
     async deleteTask( req: Request, res: Response){
 
-        this.tasksServices.deleteTask(Number(req.params.id));
+       await this.tasksServices.deleteTask(Number(req.params.id));
 
-        return res.status(204).json();
+        return res.status(204).send();
        
     }
 
@@ -35,7 +35,7 @@ export class TasksControllers{
 
         const body = req.body;
 
-        const task = this.tasksServices.createTask(body);
+        const task = await this.tasksServices.createTask(body);
 
         return res.status(201).json(task);
 
@@ -47,17 +47,15 @@ export class TasksControllers{
 
         const id = Number(req.params.id);
 
-        const updateTask = this.tasksServices.updateTask(body, id);
+        const updateTask = await this.tasksServices.updateTask(body, id);
 
-        return res.status(201).send(updateTask);
+        return res.status(200).json(updateTask);
 
     }
 
     async getTaskById(req: Request, res: Response){
 
-      
-
-        const taskById = this.tasksServices.getTaskById(Number(req.params.id))
+        const taskById = await this.tasksServices.getTaskById(Number(req.params.id))
 
         return res.status(200).json(taskById);
 
