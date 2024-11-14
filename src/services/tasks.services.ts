@@ -34,8 +34,8 @@ export class TasksServices {
     await prisma.task.delete({ where: { id: id } });
   }
 
-  async createTask(body: TTaskCreate): Promise<TTaskResponseWithoutCategory> {
-    const task = await prisma.task.create({ data: body });
+  async createTask(body: TTaskCreate , userId: number ): Promise<TTaskResponseWithoutCategory> {
+    const task = await prisma.task.create({ data: {...body, userId: userId} });
 
     return responseTaskSchemaWithoutCategory.parse(task);
   }

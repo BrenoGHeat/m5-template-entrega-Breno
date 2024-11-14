@@ -1,20 +1,21 @@
 import { z } from "zod";
 import {
-  responseUserSchema,
-  userBodySchema,
+ 
   userLoginSchema,
+  userRegisterSchema,
+  userResponseSchema,
   userSchema,
 } from "../schemas/user.schema";
 
 export type TUser = z.infer<typeof userSchema>;
 
-export type TUserBody = z.infer<typeof userBodySchema>;
+export type TUserRegister = z.infer<typeof userRegisterSchema>;
 
-export type TUserReturn = z.infer<typeof responseUserSchema>;
+export type TUserResponse = z.infer<typeof userResponseSchema>;
 
 export type TUserLogin = z.infer<typeof userLoginSchema>;
 
 export type TLoginReturn = {
   accessToken: string;
-  user: TUserReturn;
+  user: TUserResponse;
 };

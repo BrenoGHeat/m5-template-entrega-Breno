@@ -7,9 +7,9 @@ export const userSchema = z.object({
     password: z.string().min(1),
 });
 
-export const userBodySchema = userSchema.omit({ id: true });
+export const userRegisterSchema = userSchema.omit({ id: true });
 
-export const responseUserSchema = userSchema.omit({ password: true });
+export const userResponseSchema = userSchema.omit({ password: true });
 
 export const userLoginSchema = userSchema.omit({ id: true, name: true });
 

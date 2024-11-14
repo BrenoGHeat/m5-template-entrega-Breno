@@ -33,9 +33,11 @@ export class TasksControllers{
 
     async createTask( req: Request, res: Response){
 
+        const userId = res.locals.decode.id;
+
         const body = req.body;
 
-        const task = await this.tasksServices.createTask(body);
+        const task = await this.tasksServices.createTask(body , userId);
 
         return res.status(201).json(task);
 
