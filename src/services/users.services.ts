@@ -10,6 +10,7 @@ import bcrypt from "bcrypt";
 import { AppError } from "../errors/AppError";
 import jwt from "jsonwebtoken";
 
+
 @injectable()
 export class UsersServices {
   async register(body: TUserRegister): Promise<TUserResponse> {
@@ -49,8 +50,11 @@ export class UsersServices {
     };
   }
 
-  async getProfile(userId: number){
-   
-  }
+  async getProfile(userId: number): Promise<TUserResponse> {
+    const user = await prisma.user.findFirst({
+      where: { id },
+    });
 
+    return userResponseSchema.parse(user);
+  }
 }
