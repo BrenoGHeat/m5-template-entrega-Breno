@@ -5,18 +5,27 @@ import { UsersControllers } from "../controllers/users.controllers";
 import { ValidateEmail } from "../middlewares/ValidateEmail.middleware";
 import { ValidateBody } from "../middlewares/ValidateBody.middleware";
 import { userRegisterSchema } from "../schemas/user.schema";
+import { ValidateToken } from "../middlewares/ValidateToken.middleware";
 
 export const usersRouter = Router();
 
 container.registerSingleton("UserServices", UsersServices);
 
-
 const userControllers = container.resolve(UsersControllers);
 
-usersRouter.post("/" , ValidateEmail.execute, ValidateBody.execute(userRegisterSchema), (req, res) => userControllers.register(req, res));
+usersRouter.post(
+  "/",
+  ValidateEmail.execute,
+  ValidateBody.execute(userRegisterSchema),
+  (req, res) => userControllers.register(req, res)
+);
 
+usersRouter.post(
+  "/login",
+  ValidateBody.execute(userRegisterSchema),
+  (req, res) => userControllers.login(req, res)
+);
 
-usersRouter.post("/login", )
-
-
-usersRouter.get("/profile", )
+usersRouter.get("/profile", ValidateToken.execute, (req, res) =>
+  userControllers.getProfile(req, res)
+);
