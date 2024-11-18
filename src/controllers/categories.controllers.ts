@@ -9,9 +9,11 @@ export class CategoriesControllers{
     
     async createCategory( req: Request, res: Response){
 
+        const userId = +res.locals.decode.id; 
+        
         const body = req.body;
 
-        const category = await this.categoriesServices.createCategory(body);
+        const category = await this.categoriesServices.createCategory(body , userId);
 
         return res.status(201).json(category);
     }

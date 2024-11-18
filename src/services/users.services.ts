@@ -6,7 +6,7 @@ import {
   TUserRegister,
   TUserResponse,
 } from "../interfaces/users.interface";
-import bcrypt from "bcrypt";
+import { hash , compare } from "bcryptjs";
 import { AppError } from "../errors/AppError";
 import jwt from "jsonwebtoken";
 
@@ -14,7 +14,7 @@ import jwt from "jsonwebtoken";
 @injectable()
 export class UsersServices {
   async register(body: TUserRegister): Promise<TUserResponse> {
-    const hashPassword = await bcrypt.hash(body.password, 10);
+    const hashPassword = await hash(body.password, 10);
 
     const newUser = { ...body, password: hashPassword };
 
@@ -34,10 +34,10 @@ export class UsersServices {
       throw new AppError(404, "User not exists");
     }
 
-    const compare = await bcrypt.compare(body.password, user.password);
+    const compareP = await compare(body.password, user.password);
 
-    if (!compare) {
-      throw new AppError(403, "Email and password doesn't match");
+    if (!compareP) {
+      throw new AppError(401, "Email and password doesn't match");
     }
 
     return {
@@ -52,7 +52,7 @@ export class UsersServices {
 
   async getProfile(userId: number): Promise<TUserResponse> {
     const user = await prisma.user.findFirst({
-      where: { id },
+      where: { id:userId },
     });
 
     return userResponseSchema.parse(user);

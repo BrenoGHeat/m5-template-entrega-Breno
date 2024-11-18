@@ -13,11 +13,11 @@ import {
 
 @injectable()
 export class TasksServices {
-  async getTasks(search?: string): Promise<TTaskResponseWithCategory[]> {
+  async getTasks(userId: number, search?: string): Promise<TTaskResponseWithCategory[]> {
     if (search) {
       const tasks = await prisma.task.findMany({
         where: {
-          category: { name: { contains: search, mode: "insensitive" } },
+          category: { name: { contains: search, mode: "insensitive" }, userId: userId },
         },
         include: { category: true },
       });
@@ -25,7 +25,7 @@ export class TasksServices {
       return responseTaskSchemaWithCategory.array().parse(tasks);
     }
 
-    const tasks = await prisma.task.findMany({ include: { category: true } });
+    const tasks = await prisma.task.findMany({ include: { category: true } , where:{ userId: userId } });
 
     return responseTaskSchemaWithCategory.array().parse(tasks);
   }

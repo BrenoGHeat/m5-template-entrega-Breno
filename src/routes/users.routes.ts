@@ -4,7 +4,7 @@ import { UsersServices } from "../services/users.services";
 import { UsersControllers } from "../controllers/users.controllers";
 import { ValidateEmail } from "../middlewares/ValidateEmail.middleware";
 import { ValidateBody } from "../middlewares/ValidateBody.middleware";
-import { userRegisterSchema } from "../schemas/user.schema";
+import { userLoginSchema, userRegisterSchema } from "../schemas/user.schema";
 import { ValidateToken } from "../middlewares/ValidateToken.middleware";
 
 export const usersRouter = Router();
@@ -15,14 +15,14 @@ const userControllers = container.resolve(UsersControllers);
 
 usersRouter.post(
   "/",
-  ValidateEmail.execute,
   ValidateBody.execute(userRegisterSchema),
+  ValidateEmail.execute,
   (req, res) => userControllers.register(req, res)
 );
 
 usersRouter.post(
   "/login",
-  ValidateBody.execute(userRegisterSchema),
+  ValidateBody.execute(userLoginSchema),
   (req, res) => userControllers.login(req, res)
 );
 

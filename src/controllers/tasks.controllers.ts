@@ -8,17 +8,18 @@ export class TasksControllers{
     constructor(@inject("TasksServices") private tasksServices: TasksServices ){}
     async getTasks( req: Request, res: Response){
 
+        const userId = +res.locals.decode.id;
 
         const search = req.query.category as string;
 
         if(search){
-            const tasks = await this.tasksServices.getTasks(search);
+            const tasks = await this.tasksServices.getTasks(userId, search);
 
              return res.status(200).json(tasks);
 
         }
-
-        const tasks = await this.tasksServices.getTasks();
+       
+        const tasks = await this.tasksServices.getTasks(userId);
 
         return res.status(200).json(tasks);
     } 
@@ -33,7 +34,7 @@ export class TasksControllers{
 
     async createTask( req: Request, res: Response){
 
-        const userId = res.locals.decode.id;
+        const userId = +res.locals.decode.id;
 
         const body = req.body;
 
